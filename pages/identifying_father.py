@@ -17,7 +17,15 @@ st.set_page_config(
     }
 )
 
-st.title('Father Identifying')
+
+# ページリンク
+st.sidebar.title('ページリンク')
+st.sidebar.page_link("epp_checker.py", label="Home", icon="🐧")
+st.sidebar.page_link("pages/identifying_father.py",
+                     label="Identifying the father", icon="♂️", disabled=True)
+st.sidebar.page_link("pages/identifying_mother.py",
+                     label="Identifying the mother", icon="♀️")
+st.sidebar.divider()
 
 st.sidebar.title('パラメータの設定')
 
@@ -29,7 +37,7 @@ st.sidebar.title('パラメータの設定')
 st.sidebar.write('# ')
 
 st.sidebar.write('## マーカー数')
-num_marker = st.sidebar.slider('使用するマーカー数', 1, 30, 10)
+num_marker = st.sidebar.slider('使用するマーカー数', 1, 30, 14)
 
 st.sidebar.write('# ')
 
@@ -37,13 +45,16 @@ st.sidebar.write('## 許容度')
 num_permissible = st.sidebar.slider(
     '何マーカー以上が一致すれば父親と認めるか', 0, num_marker, num_marker//2)
 
+
+st.title('Identifying the Father')
+
 '# '
 
 st.subheader('テンプレート', divider='gray')
 '> 以下のボタンより，テンプレートをダウンロードできます. '
 
 with open('Template_files/template_data_f.xlsx', 'rb') as file:
-    st.download_button('ダウンロード', data=file.read(),
+    st.download_button('Download', data=file.read(),
                        file_name='template_data.xlsx')
 
 '# \n# '
@@ -103,7 +114,7 @@ if uploaded_file is not None:
 '# '
 st.subheader('親子鑑定の実施', divider='gray')
 
-analyze = st.button('解析する')
+analyze = st.button('Analyze')
 
 if analyze:
     if all(df is not None for df in [df_child, df_mother, df_father]):
@@ -134,7 +145,7 @@ if analyze:
 
         st.write('**結果は以下のボタンからダウンロード可能です.**')
         st.download_button(
-            label='結果をダウンロード',
+            label='Download results',
             data=excel_data,
             file_name='result.xlsx',
             mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
